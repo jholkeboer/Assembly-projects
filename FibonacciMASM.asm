@@ -1,29 +1,23 @@
-	
-
-    TITLE CS271 Program 2    (Program2holkeboj.asm)
+	TITLE FibonacciMASM	(FibonacciMASM.asm)
      
      ; Author: Jack Holkeboer
-     ; CS271 Program #2                Date: 1/23/15
-     ; Description: Program for counting Fibonacci sequence up to a 
-	; user-defined n.
+     ; Description: Calculates and displays Fibonacci sequence up to a user-defined n.
      
     INCLUDE Irvine32.inc  ;requires Irvine32 MASM libraries
      
-    ; (insert constant definitions here)
-	UPPERLIMIT 	EQU		<47>		;definition of constant for maximum n
+    ; upper limit constant definition
+	UPPERLIMIT 		EQU	<47>		;definition of constant for maximum n
      
     .data
-     
-    ; (insert variable definitions here)	
-     n					DWORD	?	;user-defined n, the number of Fibonacci iterations
+     	n			DWORD	?	;user-defined n, the number of Fibonacci iterations
 	username		DWORD	?	;string input for user's name
 	
 	
-	total				DWORD	?	;holds fibonacci number for current step
-	prev				DWORD	?	;holds fibonacci number for previous step
-	step				WORD	0	;track steps of sequence	
+	total			DWORD	?	;holds fibonacci number for current step
+	prev			DWORD	?	;holds fibonacci number for previous step
+	step			WORD	0	;track steps of sequence	
 	
-	; pre-defined string messages to print to console
+	; hard-coded string messages
 	msg_title		BYTE	"Fibonacci Calculator",0
 	msg_author		BYTE	"Programmed by Jack Holkeboer",0
 	
@@ -62,7 +56,7 @@
 		
 		;get string input
 		mov		edx, OFFSET username	; location to store string input
-		mov		ecx, 50						; maximum string length
+		mov		ecx, 50			; maximum string length
 		call		ReadString
 		
 		;print Hello
@@ -94,7 +88,7 @@ GETINPUT:
 		mov		eax, 0
 		call		ReadInt		;read integer from user
 		mov		n, eax		;store user input in n
-		dec		n				;subtract 1 from n
+		dec		n		;subtract 1 from n
 		
 		;validate upper limit
 		mov		ebx, UPPERLIMIT
@@ -109,11 +103,11 @@ GETINPUT:
 		;if nothing triggers a jump to ERROR, program will continue at INPUTSUCCESS
 		jmp		INPUTSUCCESS	
 		
-	ERROR:
+ERROR:
 		mov		edx, OFFSET msg_error		;print error message
 		call		WriteString
 		call		CrLf
-		jmp		GETINPUT						;try getting input again
+		jmp		GETINPUT			;try getting input again
 		
 
 		
@@ -130,9 +124,9 @@ INPUTSUCCESS:
 		mov		prev, 0
 		
 		;print first Fib. number
-		mov		  eax, total
+		mov		eax, total
 		call		WriteDec
-		mov		  edx, OFFSET msg_tab
+		mov		edx, OFFSET msg_tab
 		call		WriteString
 		
 		
@@ -141,53 +135,52 @@ INPUTSUCCESS:
 		mov		eax, total
 		mov		ebx, total
 		
-		add		eax, prev		  ;add previous value
-		mov		prev, ebx		  ;put old total in prev
+		add		eax, prev		;add previous value
+		mov		prev, ebx		;put old total in prev
 		mov		total, eax		;put new total in total variable
 		
 		;print next Fib. number
-		call		WriteDec			;print total value which is currently in eax
-		mov		  edx, OFFSET msg_tab
+		call		WriteDec		;print total value which is currently in eax
+		mov		edx, OFFSET msg_tab
 		call		WriteString		;print tab after each number
-		inc		  step				  ;increment step variable
+		inc		step			;increment step variable
 		
 		;check to see if it's time to change lines
-		mov		  ax, step
-		mov		  bl, 5
-		div		  bl
-		cmp		  AH, 0				;compare remainder with zero
-		jz			LINESKIP		;If remainder is zero, go to LINESKIP
+		mov		ax, step
+		mov		bl, 5
+		div		bl
+		cmp		AH, 0			;compare remainder with zero
+		jz		LINESKIP		;If remainder is zero, go to LINESKIP
 		
 		loop		PRINTLOOP		;go back to PRINTLOOP if ecx != 0
 
 ;farewell
 		;print "Results certified..."
 		call		CrLf
-		mov		  edx, OFFSET msg_bye1
+		mov		edx, OFFSET msg_bye1
 		call		WriteString
 		call		CrLf
 		
 		;print "Goodbye, "
-		mov		  edx, OFFSET msg_bye2
+		mov		edx, OFFSET msg_bye2
 		call		WriteString
 		
 		;print user's name
-		mov		  edx, 0						    ;reset edx
-		mov		  edx, OFFSET username	;move user's name to edx
-		call		WriteString					;print user's name
+		mov		edx, 0			;reset edx
+		mov		edx, OFFSET username	;move user's name to edx
+		call		WriteString		;print user's name
 		call		CrLf
 		call		CrLf
-		jmp		  ENDING
+		jmp		ENDING
 		
 LINESKIP:
 		call		CrLf			;skip line
-		jmp		PRINTLOOP	  ;skips a line and goes back to PRINTLOOP	
+		jmp		PRINTLOOP	  	;skips a line and goes back to PRINTLOOP	
 		
 ENDING:
 		
         exit    ; exit to operating system
     main ENDP
-     
-    ; (insert additional procedures here)
+    
      
     END main
