@@ -2,6 +2,7 @@
      
      ; Author: Jack Holkeboer
      ; Description: Calculates and displays Fibonacci sequence up to a user-defined n.
+     ; Written in MASM x86 Assembly
      
     INCLUDE Irvine32.inc  ;requires Irvine32 MASM libraries
      
